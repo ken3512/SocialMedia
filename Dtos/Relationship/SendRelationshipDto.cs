@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SocialMedia.Services.PostMessageService
+namespace SocialMedia.Dtos.Relationship
 {
-    public interface IPostMessageService
+    public class SendRelationshipDto
     {
-
+        
     }
 }
