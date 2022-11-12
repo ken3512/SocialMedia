@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "dotnetBackend": {
+    "SocialMedia": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

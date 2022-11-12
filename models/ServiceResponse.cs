@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace dotnetBackend.models
+namespace SocialMedia.models
 {
     public class ServiceResponse<T>
     {

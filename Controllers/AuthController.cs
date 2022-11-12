@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using dotnetBackend.Data;
-using dotnetBackend.Dtos.User;
+using SocialMedia.Data;
+using SocialMedia.Dtos.User;
 using Microsoft.AspNetCore.Mvc;
 
-namespace dotnetBackend.Controllers
+namespace SocialMedia.Controllers
 {
     [ApiController]
     [Route("[controller]")]

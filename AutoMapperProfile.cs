@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 
-namespace dotnetBackend
+namespace SocialMedia
 {
     public class AutoMapperProfile : Profile
     {

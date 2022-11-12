@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
-namespace dotnetBackend.Data
+namespace SocialMedia.Data
 {
     public class AuthRepository : IAuthRepository
     {

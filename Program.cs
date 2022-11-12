@@ -1,11 +1,14 @@
 
-global using dotnetBackend.models;
-using dotnetBackend.Data;
+global using SocialMedia.models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
+using SocialMedia.Data;
+using SocialMedia.Services.PostService;
+using SocialMedia.Services.PostMessageService;
+using SocialMedia.Services.RelationshipService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +31,9 @@ builder.Services.AddSwaggerGen(c => {
 });
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<IPostService, PostService>();
+builder.Services.AddScoped<IPostMessageService, PostMessageService>();
+builder.Services.AddScoped<IRelationshipService, RelationshipService>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
