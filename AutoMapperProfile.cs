@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using SocialMedia.Dtos.Post;
 using SocialMedia.Dtos.PostMessage;
+using SocialMedia.Dtos.Relationship;
 using SocialMedia.Dtos.User;
 
 namespace SocialMedia
@@ -14,6 +15,7 @@ namespace SocialMedia
         public AutoMapperProfile()
         {
             CreateMap<Post, GetPostDto>();
+            CreateMap<Relationship, GetRelationshipDto>();
             CreateMap<CreatePostDto, Post>();
             CreateMap<User, GetUserDto>();
             CreateMap<PostMessage, GetPostMessageDto>();
