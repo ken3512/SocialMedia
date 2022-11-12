@@ -26,7 +26,7 @@ namespace SocialMedia.Controllers
         public async Task<ActionResult<ServiceResponse<List<GetRelationshipDto>>>> GetSent() 
         {
             var response = await _relationshipService.GetSent();
-            if(response.Data == null)
+            if(response.Success == false)
             {
                 return BadRequest(response);
             }
@@ -37,7 +37,7 @@ namespace SocialMedia.Controllers
         public async Task<ActionResult<ServiceResponse<List<GetRelationshipDto>>>> GetReceived() 
         {
             var response = await _relationshipService.GetReceived();
-            if(response.Data == null)
+            if(response.Success == false)
             {
                 return BadRequest(response);
             }
@@ -48,7 +48,7 @@ namespace SocialMedia.Controllers
         public async Task<ActionResult<ServiceResponse<GetPostDto>>> SendRequest(int userId) 
         {
             var response = await _relationshipService.SendRequest(userId);
-            if(response.Data == null)
+            if(response.Success == false)
             {
                 return BadRequest(response);
             }
@@ -59,7 +59,7 @@ namespace SocialMedia.Controllers
         public async Task<ActionResult<ServiceResponse<GetPostDto>>> RejectRequest(int userId) 
         {
             var response = await _relationshipService.RejectRequest(userId);
-            if(response.Data == null)
+            if(response.Success == false)
             {
                 return BadRequest(response);
             }
@@ -70,7 +70,7 @@ namespace SocialMedia.Controllers
         public async Task<ActionResult<ServiceResponse<GetUserDto>>> CancelRequest(int userId) 
         {
             var response = await _relationshipService.CancelRequest(userId);
-            if(response.Data == null)
+            if(response.Success == false)
             {
                 return BadRequest(response);
             }
@@ -81,7 +81,7 @@ namespace SocialMedia.Controllers
         public async Task<ActionResult<ServiceResponse<GetRelationshipDto>>> AcceptRequest(int userId) 
         {
             var response = await _relationshipService.AcceptRequest(userId);
-            if(response.Data == null)
+            if(response.Success == false)
             {
                 return BadRequest(response);
             }

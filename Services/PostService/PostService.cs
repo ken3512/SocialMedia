@@ -38,6 +38,9 @@ namespace SocialMedia.Services.PostService
                 await _context.SaveChangesAsync();
 
                 var dbPosts = await _context.Posts
+                    .Include(p => p.Messages).ThenInclude(m => m.User)
+                    .Include(p => p.Likes)
+                    .Include(p => p.User)
                     .Where(p => p.UserId == GetUserId())
                     .ToListAsync();
 
@@ -69,7 +72,9 @@ namespace SocialMedia.Services.PostService
                 }
 
                 var dbPosts = await _context.Posts
+                    .Include(p => p.Messages).ThenInclude(m => m.User)
                     .Include(p => p.Likes)
+                    .Include(p => p.User)
                     .Where(p => p.UserId == id)
                     .ToListAsync();
 
@@ -90,7 +95,9 @@ namespace SocialMedia.Services.PostService
             try
             {
                 Post post = await _context.Posts
+                    .Include(p => p.Messages).ThenInclude(m => m.User)
                     .Include(p => p.Likes)
+                    .Include(p => p.User)
                     .FirstOrDefaultAsync(p => p.Id == id && p.UserId == GetUserId());
                 
                 if(post == null)
@@ -104,7 +111,9 @@ namespace SocialMedia.Services.PostService
                 await _context.SaveChangesAsync();
 
                 var dbPosts = await _context.Posts
+                    .Include(p => p.Messages).ThenInclude(m => m.User)
                     .Include(p => p.Likes)
+                    .Include(p => p.User)
                     .Where(p => p.UserId == GetUserId())
                     .ToListAsync();
 
@@ -125,7 +134,9 @@ namespace SocialMedia.Services.PostService
             try
             {
                 Post post = await _context.Posts
+                    .Include(p => p.Messages).ThenInclude(m => m.User)
                     .Include(p => p.Likes)
+                    .Include(p => p.User)
                     .FirstOrDefaultAsync(p => p.Id == updatedPost.Id && p.UserId == GetUserId());
                 
                 if(post == null)
@@ -155,7 +166,9 @@ namespace SocialMedia.Services.PostService
                 await _context.SaveChangesAsync();
 
                 var dbPosts = await _context.Posts
+                    .Include(p => p.Messages).ThenInclude(m => m.User)
                     .Include(p => p.Likes)
+                    .Include(p => p.User)
                     .Where(p => p.UserId == GetUserId())
                     .ToListAsync();
 
@@ -176,6 +189,7 @@ namespace SocialMedia.Services.PostService
             try
             {
                 Post post = await _context.Posts
+                    .Include(p => p.Messages).ThenInclude(m => m.User)
                     .Include(p => p.Likes)
                     .Include(p => p.User)
                     .FirstOrDefaultAsync(p => p.Id == id);
@@ -237,6 +251,9 @@ namespace SocialMedia.Services.PostService
                     .ToListAsync();
                 
                 List<Post> posts = await _context.Posts
+                    .Include(p => p.Messages).ThenInclude(m => m.User)
+                    .Include(p => p.Likes)
+                    .Include(p => p.User)
                     .Where(p => friends.Contains(p.User))
                     .ToListAsync();
                 

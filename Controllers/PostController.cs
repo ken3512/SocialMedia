@@ -25,7 +25,7 @@ namespace SocialMedia.Controllers
         public async Task<ActionResult<ServiceResponse<List<GetPostDto>>>> GetAllPosts(int id)
         {
             var response = await _postService.GetPosts(id);
-            if(response.Data == null)
+            if(response.Success == false)
             {
                 return BadRequest(response);
             }
@@ -36,7 +36,7 @@ namespace SocialMedia.Controllers
         public async Task<ActionResult<ServiceResponse<List<GetPostDto>>>> GetFeed()
         {
             var response = await _postService.GetFeed();
-            if(response.Data == null)
+            if(response.Success == false)
             {
                 return BadRequest(response);
             }
@@ -47,7 +47,7 @@ namespace SocialMedia.Controllers
         public async Task<ActionResult<ServiceResponse<List<GetUserDto>>>> GetFriends()
         {
             var response = await _postService.GetFriends();
-            if(response.Data == null)
+            if(response.Success == false)
             {
                 return BadRequest(response);
             }
@@ -58,7 +58,7 @@ namespace SocialMedia.Controllers
         public async Task<ActionResult<ServiceResponse<List<GetPostDto>>>> CreatePost(CreatePostDto newPost)
         {
             var response = await _postService.CreatePost(newPost);
-            if(response.Data == null)
+            if(response.Success == false)
             {
                 return BadRequest(response);
             }
@@ -69,7 +69,7 @@ namespace SocialMedia.Controllers
         public async Task<ActionResult<ServiceResponse<List<GetPostDto>>>> DeletePost(int id)
         {
             var response = await _postService.DeletePost(id);
-            if(response.Data == null)
+            if(response.Success == false)
             {
                 return BadRequest(response);
             }
@@ -80,7 +80,7 @@ namespace SocialMedia.Controllers
         public async Task<ActionResult<ServiceResponse<List<GetPostDto>>>> EditPost(UpdatePostDto updatedPost)
         {
             var response = await _postService.EditPost(updatedPost);
-            if(response.Data == null)
+            if(response.Success == false)
             {
                 return BadRequest(response);
             }
@@ -91,7 +91,7 @@ namespace SocialMedia.Controllers
         public async Task<ActionResult<ServiceResponse<GetPostDto>>> LikePost(int id)
         {
             var response = await _postService.LikePost(id);
-            if(response.Data == null)
+            if(response.Success == false)
             {
                 return BadRequest(response);
             }
