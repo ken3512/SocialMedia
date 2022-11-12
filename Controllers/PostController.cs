@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SocialMedia.Dtos.Post;
+using SocialMedia.Dtos.User;
 using SocialMedia.Services.PostService;
 
 namespace SocialMedia.Controllers
@@ -20,10 +21,32 @@ namespace SocialMedia.Controllers
             _postService = postService;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<ServiceResponse<List<GetPostDto>>>> GetAllPosts()
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ServiceResponse<List<GetPostDto>>>> GetAllPosts(int id)
         {
-            var response = await _postService.GetPosts();
+            var response = await _postService.GetPosts(id);
+            if(response.Data == null)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<ServiceResponse<List<GetPostDto>>>> GetFeed()
+        {
+            var response = await _postService.GetFeed();
+            if(response.Data == null)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
+        }
+
+        [HttpGet("Friends")]
+        public async Task<ActionResult<ServiceResponse<List<GetUserDto>>>> GetFriends()
+        {
+            var response = await _postService.GetFriends();
             if(response.Data == null)
             {
                 return BadRequest(response);

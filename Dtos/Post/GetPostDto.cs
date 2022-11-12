@@ -12,6 +12,7 @@ namespace SocialMedia.Dtos.Post
         public int Id { get; set; }
         public string Title { get; set; } = string.Empty;
         public string Content { get; set; } = string.Empty;
+        public GetUserDto User { get; set; }
         public List<GetUserDto> Likes { get; set; }
         public List<GetPostMessageDto> Messages { get; set; }
     }

@@ -9,7 +9,6 @@ namespace SocialMedia.Dtos.PostMessage
     public class GetPostMessageDto
     {
         public int Id { get; set; }
-        public int MyProperty { get; set; }
         public string Text { get; set; } = string.Empty;
         public GetUserDto User { get; set; }
     }

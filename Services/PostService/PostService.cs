@@ -7,6 +7,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using SocialMedia.Data;
 using SocialMedia.Dtos.Post;
+using SocialMedia.Dtos.User;
 
 namespace SocialMedia.Services.PostService
 {
@@ -50,15 +51,26 @@ namespace SocialMedia.Services.PostService
             return response;
         }
 
-        public async Task<ServiceResponse<List<GetPostDto>>> GetPosts()
+        public async Task<ServiceResponse<List<GetPostDto>>> GetPosts(int id)
         {
             var response = new ServiceResponse<List<GetPostDto>>();
 
             try
             {
+                Relationship check = await _context.Relationships
+                    .FirstOrDefaultAsync(r => (r.SenderId == id && r.ReceiverId == GetUserId()) ||
+                    (r.SenderId == GetUserId() && r.ReceiverId == id) &&
+                    r.pending == false);
+                if(check == null && id != GetUserId())
+                {
+                    response.Success = false;
+                    response.Message = "Must be friends to see posts.";
+                    return response;
+                }
+
                 var dbPosts = await _context.Posts
                     .Include(p => p.Likes)
-                    .Where(p => p.UserId == GetUserId())
+                    .Where(p => p.UserId == id)
                     .ToListAsync();
 
                 response.Data = dbPosts.Select(p => _mapper.Map<GetPostDto>(p)).ToList();
@@ -157,8 +169,6 @@ namespace SocialMedia.Services.PostService
             return response;
         }
 
-        // TODO:
-        // Fix after relationships are implemented
         public async Task<ServiceResponse<GetPostDto>> LikePost(int id)
         {
             var response = new ServiceResponse<GetPostDto>();
@@ -167,14 +177,33 @@ namespace SocialMedia.Services.PostService
             {
                 Post post = await _context.Posts
                     .Include(p => p.Likes)
+                    .Include(p => p.User)
                     .FirstOrDefaultAsync(p => p.Id == id);
-
-                User user = await _context.Users.FirstOrDefaultAsync(u => u.Id == GetUserId());
                 
                 if(post == null)
                 {
                     response.Success = false;
                     response.Message = "Post not found.";
+                    return response;
+                }
+
+                User user = await _context.Users.FirstOrDefaultAsync(u => u.Id == GetUserId());
+                
+                Relationship check = await _context.Relationships
+                    .FirstOrDefaultAsync(r => (r.SenderId == post.User.Id && r.ReceiverId == GetUserId()) ||
+                    (r.SenderId == GetUserId() && r.ReceiverId == post.User.Id) &&
+                    r.pending == false);
+                
+                if(check == null && post.User.Id != GetUserId())
+                {
+                    response.Success = false;
+                    response.Message = "Post not found.";
+                    return response;
+                }
+                else if(post.User.Id == GetUserId())
+                {
+                    response.Success = false;
+                    response.Message = "Cannot like your own post.";
                     return response;
                 }
                 else if(post.Likes.Contains(user))
@@ -186,8 +215,52 @@ namespace SocialMedia.Services.PostService
 
                 post.Likes.Add(user);
                 await _context.SaveChangesAsync();
-
                 response.Data = _mapper.Map<GetPostDto>(post);
+            }
+            catch(Exception ex)
+            {
+                response.Success = false;
+                response.Message = ex.Message;
+            }
+            return response;
+        }
+
+        public async Task<ServiceResponse<List<GetPostDto>>> GetFeed()
+        {
+            var response = new ServiceResponse<List<GetPostDto>>();
+
+            try
+            {
+                // List<User> friends = await _context.Users
+                //     .Where
+
+                // List<Post> posts = await _context.Posts
+                //     .Where(p =>
+                //         p.UserId != GetUserId() &&
+                //         (p.User.Received.Where(r => r.SenderId == GetUserId() && r.pending == false))
+                //     )
+                //     .ToListAsync();
+            }
+            catch(Exception ex)
+            {
+                response.Success = false;
+                response.Message = ex.Message;
+            }
+            return response;
+        }
+
+        public async Task<ServiceResponse<List<GetUserDto>>> GetFriends()
+        {
+            var response = new ServiceResponse<List<GetUserDto>>();
+
+            try
+            {
+                List<User> friends = await _context.Users
+                    .Where(u => u.Received.Any(r => r.pending == false && r.SenderId == GetUserId()) ||
+                    u.Sent.Any(r => r.pending == false && r.ReceiverId == GetUserId()))
+                    .ToListAsync();
+                
+                response.Data = friends.Select(f => _mapper.Map<GetUserDto>(f)).ToList();
             }
             catch(Exception ex)
             {
