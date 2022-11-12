@@ -231,15 +231,16 @@ namespace SocialMedia.Services.PostService
 
             try
             {
-                // List<User> friends = await _context.Users
-                //     .Where
-
-                // List<Post> posts = await _context.Posts
-                //     .Where(p =>
-                //         p.UserId != GetUserId() &&
-                //         (p.User.Received.Where(r => r.SenderId == GetUserId() && r.pending == false))
-                //     )
-                //     .ToListAsync();
+                List<User> friends = await _context.Users
+                    .Where(u => u.Received.Any(r => r.pending == false && r.SenderId == GetUserId()) ||
+                    u.Sent.Any(r => r.pending == false && r.ReceiverId == GetUserId()))
+                    .ToListAsync();
+                
+                List<Post> posts = await _context.Posts
+                    .Where(p => friends.Contains(p.User))
+                    .ToListAsync();
+                
+                response.Data = posts.Select(p => _mapper.Map<GetPostDto>(p)).ToList();
             }
             catch(Exception ex)
             {
